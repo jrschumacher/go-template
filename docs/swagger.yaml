@@ -1,0 +1,203 @@
+definitions:
+  api.HealthResult:
+    properties:
+      ok:
+        type: boolean
+    type: object
+  api.VersionStat:
+    properties:
+      buildTime:
+        type: string
+      version:
+        type: string
+      versionLong:
+        type: string
+    type: object
+  store.StoreDeleteResult:
+    properties:
+      _id:
+        type: string
+      prevData:
+        additionalProperties: true
+        type: object
+    type: object
+  store.StoreMultiResult:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/store.StoreSingleResult'
+        type: array
+    type: object
+  store.StoreSingleResult:
+    properties:
+      _id:
+        type: string
+      data:
+        additionalProperties: true
+        type: object
+    type: object
+  store.StoreUpdateResult:
+    properties:
+      _id:
+        type: string
+      data:
+        additionalProperties: true
+        type: object
+      prevData:
+        additionalProperties: true
+        type: object
+      replaced:
+        type: boolean
+    type: object
+info:
+  contact: {}
+  description: A go template project
+  license: {}
+  title: Go Template API
+paths:
+  /delete/{id}:
+    delete:
+      description: Delete an item from the store
+      parameters:
+      - description: Id of data to be updated
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/store.StoreDeleteResult'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Delete an item
+      tags:
+      - store
+  /fetch/{id}:
+    get:
+      description: Fetch an item from the store
+      parameters:
+      - description: Id of data to be updated
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/store.StoreSingleResult'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Fetch an item
+      tags:
+      - store
+  /health:
+    get:
+      description: Get health of service
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/api.HealthResult'
+            type: array
+      summary: Health endpoint
+      tags:
+      - utils
+  /search:
+    get:
+      description: Search for data in store
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/store.StoreMultiResult'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Search for data in store
+      tags:
+      - store
+  /update/{id}:
+    put:
+      description: Write data to store
+      parameters:
+      - description: Id of data to be updated
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Data to store
+        in: body
+        name: payload
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/store.StoreUpdateResult'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update data in store
+      tags:
+      - store
+  /write:
+    post:
+      description: Write data to store
+      parameters:
+      - description: Data to store
+        in: body
+        name: payload
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/store.StoreSingleResult'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Write to store
+      tags:
+      - store
+swagger: "2.0"

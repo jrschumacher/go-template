@@ -1,0 +1,54 @@
+name: Validate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  hadolint:
+    name: 🔍 Dockerfile linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 
+      - uses: hadolint/hadolint-action@v1.5.0
+        with:
+          dockerfile: Dockerfile.customer
+
+  golint:
+    name: 🧹 Code linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+      - run: go install golang.org/x/lint/golint@latest
+      - name: Lint
+        run: golint ./...
+
+  unit-test:
+    name: 🧪 Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+      - name: Unit test
+        if: ${{ always() }}
+        run: go test -cover -failfast -v ./...
+
+  smoke-test:
+    name: 🚬 Smoke tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+      - name: Build
+        run: go build -o main .
+      # - name: Smoke Tests
+      #   run: ./scripts/smoke-tests.sh
