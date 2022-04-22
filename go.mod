@@ -10,8 +10,8 @@ require (
 	github.com/pytimer/mux-logrus v0.0.0-20200505085744-ce5a5e748151
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.2.1
-	github.com/swaggo/http-swagger v1.1.2
-	github.com/swaggo/swag v1.7.0
+	github.com/swaggo/http-swagger v1.2.6
+	github.com/swaggo/swag v1.7.9
 	github.com/tidwall/buntdb v1.2.6
 )
 
@@ -27,7 +27,7 @@ require (
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14 // indirect
+	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2 // indirect
 	github.com/tidwall/btree v0.6.1 // indirect
 	github.com/tidwall/gjson v1.9.4 // indirect
 	github.com/tidwall/grect v0.1.2 // indirect
